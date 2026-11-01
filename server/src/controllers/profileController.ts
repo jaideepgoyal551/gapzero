@@ -13,13 +13,13 @@ export class ProfileController {
           id: userId,
           email: req.user!.email,
           full_name: '',
-          target_role: 'Full-Stack Software Engineer',
+          target_role: '',
           years_of_experience: 0,
           current_skills: [],
           target_companies: [],
           preferred_country: 'United States',
           preferred_work_arrangement: 'Remote',
-          weekly_learning_hours: 10,
+          weekly_learning_hours: 0,
           career_goals: '',
         });
       }
@@ -70,7 +70,7 @@ export class ProfileController {
       const summary: DashboardSummary = {
         profile,
         latest_resume_analysis: latestAnalysis,
-        career_fit_score: latestAnalysis ? latestAnalysis.career_fit_score : (profile?.current_skills.length ? 65 : 0),
+        career_fit_score: latestAnalysis?.career_fit_score ?? 0,
         identified_skills_count: (latestAnalysis?.extracted_data?.technical_skills?.length || 0) + (profile?.current_skills.length || 0),
         critical_gaps_count: latestAnalysis?.missing_skills?.length || 0,
         completed_tasks_count: completedTasks.length,

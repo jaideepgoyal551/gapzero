@@ -24,14 +24,6 @@ import {
   UploadCloud,
   ChevronRight,
 } from 'lucide-react';
-import {
-  Radar,
-  RadarChart,
-  PolarGrid,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  ResponsiveContainer,
-} from 'recharts';
 
 export const DashboardPage: React.FC = () => {
   const { profile } = useAuth();
@@ -44,6 +36,7 @@ export const DashboardPage: React.FC = () => {
   const fetchDashboard = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await apiRequest<DashboardSummary>('/dashboard/summary');
       setSummary(data);
     } catch (err: any) {
@@ -65,7 +58,7 @@ export const DashboardPage: React.FC = () => {
       });
       await fetchDashboard();
     } catch (err) {
-      console.error('Failed to update task:', err);
+      setError(err instanceof Error ? err.message : 'Failed to update task.');
     }
   };
 
@@ -93,28 +86,25 @@ export const DashboardPage: React.FC = () => {
   const latestAnalysis = summary?.latest_resume_analysis;
   const isNewUser = !latestAnalysis && (!profile?.current_skills || profile.current_skills.length === 0);
 
-  // Skill Category coverage radar chart data
-  const radarData = [
-    { category: 'Frontend', current: 75, target: 90 },
-    { category: 'Backend', current: 55, target: 85 },
-    { category: 'Databases', current: 40, target: 85 },
-    { category: 'DevOps', current: 45, target: 80 },
-    { category: 'System Design', current: 50, target: 85 },
-    { category: 'Soft Skills', current: 80, target: 85 },
-  ];
-
   return (
     <div className="space-y-8">
       {/* Welcome Banner */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-navy-100">
         <div>
           <h1 className="text-2xl font-bold text-navy-950 tracking-tight">
-            Welcome back, {profile?.full_name ? profile.full_name.split(' ')[0] : 'Engineer'}!
+            Welcome back{profile?.full_name ? `, ${profile.full_name.split(' ')[0]}` : ''}!
           </h1>
           <p className="text-xs sm:text-sm text-navy-500 mt-0.5">
-            Targeting: <span className="font-semibold text-brand-700">{profile?.target_role || 'Full-Stack Software Engineer'}</span>
+            Targeting: <span className="font-semibold text-brand-400">{profile?.target_role || 'Add a target role in your profile'}</span>
           </p>
         </div>
+
+        {error && (
+          <div role="alert" className="flex flex-col gap-3 rounded-2xl border border-rose-400/30 bg-rose-950/30 p-4 text-sm text-rose-200 sm:flex-row sm:items-center sm:justify-between">
+            <span>{error}</span>
+            <Button size="sm" variant="outline" onClick={fetchDashboard}>Try again</Button>
+          </div>
+        )}
 
         <div className="flex items-center gap-3">
           <Link to="/resume-analyzer">
@@ -132,11 +122,11 @@ export const DashboardPage: React.FC = () => {
 
       {/* New User Welcome Callout (If no resume yet) */}
       {isNewUser && (
-        <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-600 to-violet-600 text-white shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-800 to-orange-700 text-white shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="max-w-xl">
             <h3 className="text-lg font-bold">Start by analyzing your resume</h3>
             <p className="text-xs text-brand-100 mt-1">
-              Upload your PDF or DOCX resume to automatically detect technical skills, calculate your career fit score, and identify critical knowledge gaps.
+              Upload a PDF or DOCX resume to review your experience, identify relevant skills, and get suggestions for your next steps.
             </p>
           </div>
           <Link to="/resume-analyzer">
@@ -154,10 +144,12 @@ export const DashboardPage: React.FC = () => {
           <div>
             <span className="text-xs font-semibold text-navy-500 uppercase tracking-wider">Career Fit Score</span>
             <div className="text-3xl font-bold text-navy-900 mt-1">
-              {summary?.career_fit_score ? `${summary.career_fit_score}%` : 'N/A'}
+              {summary?.latest_resume_analysis ? `${summary.career_fit_score}%` : '—'}
             </div>
             <span className="text-[11px] text-brand-700 font-medium">
-              {summary?.career_fit_score && summary.career_fit_score >= 70 ? 'Strong Baseline' : 'Needs Optimization'}
+              {summary?.latest_resume_analysis
+                ? (summary.career_fit_score >= 70 ? 'Strong alignment' : 'Room to grow')
+                : 'Upload a resume to begin'}
             </span>
           </div>
           <div className="w-12 h-12 rounded-xl bg-brand-50 text-brand-700 flex items-center justify-center">
@@ -170,9 +162,9 @@ export const DashboardPage: React.FC = () => {
           <div>
             <span className="text-xs font-semibold text-navy-500 uppercase tracking-wider">Skills Identified</span>
             <div className="text-3xl font-bold text-navy-900 mt-1">
-              {summary?.identified_skills_count || (profile?.current_skills?.length || 0)}
+              {summary?.identified_skills_count ?? profile?.current_skills?.length ?? '—'}
             </div>
-            <span className="text-[11px] text-emerald-700 font-medium">Verified competencies</span>
+            <span className="text-[11px] text-emerald-300 font-medium">Skills in your profile</span>
           </div>
           <div className="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-700 flex items-center justify-center">
             <CheckCircle2 className="w-6 h-6" />
@@ -184,7 +176,7 @@ export const DashboardPage: React.FC = () => {
           <div>
             <span className="text-xs font-semibold text-navy-500 uppercase tracking-wider">Critical Gaps</span>
             <div className="text-3xl font-bold text-rose-600 mt-1">
-              {summary?.critical_gaps_count || 3}
+              {summary?.latest_resume_analysis ? summary.critical_gaps_count : '—'}
             </div>
             <span className="text-[11px] text-rose-700 font-medium">Priority items to bridge</span>
           </div>
@@ -198,58 +190,56 @@ export const DashboardPage: React.FC = () => {
           <div>
             <span className="text-xs font-semibold text-navy-500 uppercase tracking-wider">Roadmap Progress</span>
             <div className="text-3xl font-bold text-navy-900 mt-1">
-              {summary?.roadmap_progress_percentage || 0}%
+              {summary ? `${summary.roadmap_progress_percentage}%` : '—'}
             </div>
             <span className="text-[11px] text-navy-500 font-medium">
-              {summary?.completed_tasks_count || 0} / {summary?.total_tasks_count || 8} completed
+              {summary ? `${summary.completed_tasks_count} / ${summary.total_tasks_count} completed` : 'No roadmap data yet'}
             </span>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-violet-50 text-violet-700 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-brand-50 text-brand-400 flex items-center justify-center">
             <Map className="w-6 h-6" />
           </div>
         </Card>
       </div>
 
-      {/* Main Grid: Career Fit Gauge + Category Radar Chart + Upcoming Tasks */}
+      {/* Main Grid: Profile insights + upcoming tasks */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Fit Gauge & Radar */}
-        <Card className="p-6 flex flex-col justify-between">
-          <div>
+        <Card className="p-6">
+          {summary?.latest_resume_analysis ? (
+            <>
             <div className="flex items-center justify-between mb-4">
               <h3 className="font-bold text-navy-900 text-sm">Role Readiness Index</h3>
-              <Badge variant="purple">AI Calibrated</Badge>
+              <Badge variant="purple">From your profile</Badge>
             </div>
             <ScoreGauge
-              score={summary?.career_fit_score || 74}
+              score={summary.career_fit_score}
               size={130}
-              label={profile?.target_role || 'Target Role'}
-              sublabel="Based on current profile & resume"
+              label={profile?.target_role || 'Career fit'}
+              sublabel="Based on your latest analysis"
             />
-          </div>
-
-          <div className="mt-6 pt-4 border-t border-navy-100">
-            <div className="h-48 w-full">
-              <ResponsiveContainer width="100%" height="100%">
-                <RadarChart data={radarData}>
-                  <PolarGrid stroke="#E2E8F0" />
-                  <PolarAngleAxis dataKey="category" tick={{ fill: '#475569', fontSize: 10 }} />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                  <Radar name="Current" dataKey="current" stroke="#4F46E5" fill="#4F46E5" fillOpacity={0.35} />
-                  <Radar name="Target" dataKey="target" stroke="#94A3B8" fill="#94A3B8" fillOpacity={0.1} />
-                </RadarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="flex items-center justify-center gap-4 text-[11px] text-navy-500 mt-2">
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-brand-600" />
-                <span>Your Current Skills</span>
+            {profile?.current_skills?.length ? (
+              <div className="mt-6 border-t border-white/10 pt-4">
+                <h4 className="mb-3 text-xs font-semibold uppercase tracking-wide text-navy-500">Your skills</h4>
+                <div className="flex flex-wrap gap-2">
+                  {profile.current_skills.slice(0, 8).map(skill => (
+                    <Badge key={skill} variant="outline" size="sm">{skill}</Badge>
+                  ))}
+                </div>
               </div>
-              <div className="flex items-center gap-1.5">
-                <span className="w-2.5 h-2.5 rounded-full bg-navy-300" />
-                <span>Target Role Benchmark</span>
+            ) : null}
+            </>
+          ) : (
+            <div className="flex h-full min-h-64 flex-col items-center justify-center text-center">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-orange-300">
+                <Target className="h-6 w-6" />
               </div>
+              <h3 className="font-bold text-navy-900">Your career insights will appear here</h3>
+              <p className="mt-2 max-w-xs text-sm text-navy-500">Add your resume to see information based on your own experience.</p>
+              <Link to="/resume-analyzer" className="mt-4">
+                <Button size="sm">Analyze a resume</Button>
+              </Link>
             </div>
-          </div>
+          )}
         </Card>
 
         {/* Center & Right Column: Upcoming Roadmap Tasks */}
@@ -301,7 +291,7 @@ export const DashboardPage: React.FC = () => {
                 ))
               ) : (
                 <div className="text-center py-8 text-xs text-navy-500">
-                  No pending tasks in this phase. You are fully up to date!
+                  {summary ? 'No pending tasks in this phase. You are fully up to date!' : 'Your roadmap tasks will appear here when available.'}
                 </div>
               )}
             </div>
@@ -309,9 +299,11 @@ export const DashboardPage: React.FC = () => {
 
           <div className="mt-6 pt-4 border-t border-navy-100 flex items-center justify-between">
             <span className="text-xs font-medium text-navy-600">Roadmap Progress</span>
-            <div className="w-48">
-              <ProgressBar value={summary?.roadmap_progress_percentage || 0} color="brand" size="sm" showPercent />
-            </div>
+            {summary ? (
+              <div className="w-48 max-w-[50%]">
+                <ProgressBar value={summary.roadmap_progress_percentage} color="brand" size="sm" showPercent />
+              </div>
+            ) : <span className="text-xs text-navy-500">Not available yet</span>}
           </div>
         </Card>
       </div>
@@ -326,7 +318,7 @@ export const DashboardPage: React.FC = () => {
             </div>
             <h4 className="text-sm font-bold text-navy-900">ATS Resume Optimizer</h4>
             <p className="text-xs text-navy-500 mt-1">
-              Verify your keyword density and rewrite weak bullets into high-impact Google X-Y-Z achievements.
+              Review keyword coverage and improve the clarity of your resume bullet points.
             </p>
           </div>
           <Link to="/ats-optimizer" className="mt-4">

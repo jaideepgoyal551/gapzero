@@ -17,7 +17,7 @@ import {
 
 export const LinkedInOptimizerPage: React.FC = () => {
   const { profile } = useAuth();
-  const [targetRole, setTargetRole] = useState(profile?.target_role || 'Full-Stack Software Engineer');
+  const [targetRole, setTargetRole] = useState(profile?.target_role || '');
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<LinkedInOptimization | null>(null);
   const [copiedKey, setCopiedKey] = useState<string | null>(null);

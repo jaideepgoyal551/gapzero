@@ -144,7 +144,7 @@ export const CareerCoachPage: React.FC = () => {
             <Badge size="sm" variant="purple">Connected</Badge>
           </div>
           <p className="text-xs font-semibold text-navy-900 truncate">
-            Target: {profile?.target_role || 'Full-Stack Software Engineer'}
+            Target: {profile?.target_role || 'Not set yet'}
           </p>
           <p className="text-[11px] text-navy-600 line-clamp-2">
             Goals: {profile?.career_goals || 'Aiming to advance into high-impact engineering.'}
@@ -183,7 +183,7 @@ export const CareerCoachPage: React.FC = () => {
         {/* Chat Header */}
         <div className="p-4 border-b border-navy-100 flex items-center justify-between bg-navy-50/30">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 to-violet-600 flex items-center justify-center text-white">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-brand-600 to-orange-500 flex items-center justify-center text-white">
               <Sparkles className="w-4 h-4" />
             </div>
             <div>
@@ -191,7 +191,7 @@ export const CareerCoachPage: React.FC = () => {
               <p className="text-[11px] text-navy-500">Continuous context of your verified skills, roadmap, and resume</p>
             </div>
           </div>
-          <Badge variant="outline" size="sm">Claude 3.5 Ready</Badge>
+          <Badge variant="outline" size="sm">Career coach</Badge>
         </div>
 
         {/* Message Stream */}

@@ -24,7 +24,7 @@ import {
 
 export const ResumeAnalyzerPage: React.FC = () => {
   const { profile } = useAuth();
-  const [targetRole, setTargetRole] = useState(profile?.target_role || 'Full-Stack Software Engineer');
+  const [targetRole, setTargetRole] = useState(profile?.target_role || '');
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [analysisStatus, setAnalysisStatus] = useState<string | null>(null);

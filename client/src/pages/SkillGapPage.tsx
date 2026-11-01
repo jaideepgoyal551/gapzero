@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { apiRequest } from '@/lib/api';
 import { SkillGapReport, SkillGapItem, SkillCategory, GapSeverity } from '@/types';
@@ -26,10 +27,12 @@ export const SkillGapPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [categoryFilter, setCategoryFilter] = useState<string>('All');
   const [severityFilter, setSeverityFilter] = useState<string>('All');
+  const [error, setError] = useState<string | null>(null);
 
   const fetchSkillGap = async () => {
     try {
       setLoading(true);
+      setError(null);
       const data = await apiRequest<SkillGapReport>('/skills/gap-analysis', {
         method: 'POST',
         body: JSON.stringify({
@@ -39,7 +42,7 @@ export const SkillGapPage: React.FC = () => {
       });
       setReport(data);
     } catch (err) {
-      console.error('Failed to load skill gap report:', err);
+      setError(err instanceof Error ? err.message : 'Failed to load skill gap report.');
     } finally {
       setLoading(false);
     }
@@ -83,13 +86,31 @@ export const SkillGapPage: React.FC = () => {
         </Button>
       </div>
 
+      {error && (
+        <div role="alert" className="flex flex-col gap-3 rounded-2xl border border-rose-400/30 bg-rose-950/30 p-4 text-sm text-rose-200 sm:flex-row sm:items-center sm:justify-between">
+          <span>{error}</span>
+          <Button size="sm" variant="outline" onClick={fetchSkillGap}>Try again</Button>
+        </div>
+      )}
+
       {/* Top Cards: Fit Score & Category Breakdown */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="p-6 flex flex-col justify-between items-center text-center">
-          <ScoreGauge score={report?.overall_fit_score || 72} size={135} label="Overall Role Fit" />
-          <div className="mt-4 text-xs text-navy-500 max-w-xs">
-            Evaluated using Claude 3.5 structured criteria comparing verified resume competencies with hiring expectations.
-          </div>
+          {report ? (
+            <>
+              <ScoreGauge score={report.overall_fit_score} size={135} label="Overall Role Fit" />
+              <div className="mt-4 text-xs text-navy-500 max-w-xs">
+                Based on the skills and target role in your profile.
+              </div>
+            </>
+          ) : (
+            <div className="flex min-h-48 flex-col items-center justify-center">
+              <Target className="mb-3 h-7 w-7 text-orange-300" />
+              <h3 className="font-semibold text-navy-900">No role fit score yet</h3>
+              <p className="mt-2 text-xs text-navy-500">Add your target role and skills to your profile.</p>
+              <Link to="/settings" className="mt-4"><Button size="sm" variant="outline">Update profile</Button></Link>
+            </div>
+          )}
         </Card>
 
         {/* Category Coverage Progress Bars */}

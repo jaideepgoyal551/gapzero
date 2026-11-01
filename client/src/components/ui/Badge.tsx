@@ -20,12 +20,12 @@ export const Badge: React.FC<BadgeProps> = ({
   };
 
   const variantStyles = {
-    default: 'bg-navy-100 text-navy-800 border-navy-200',
-    success: 'bg-emerald-50 text-emerald-700 border-emerald-200',
-    warning: 'bg-amber-50 text-amber-700 border-amber-200',
-    danger: 'bg-rose-50 text-rose-700 border-rose-200',
-    info: 'bg-blue-50 text-blue-700 border-blue-200',
-    purple: 'bg-brand-50 text-brand-700 border-brand-200',
+    default: 'bg-navy-100 text-navy-800 border-navy-300',
+    success: 'bg-emerald-950/40 text-emerald-300 border-emerald-800/60',
+    warning: 'bg-amber-950/40 text-amber-300 border-amber-800/60',
+    danger: 'bg-rose-950/40 text-rose-300 border-rose-800/60',
+    info: 'bg-blue-950/40 text-blue-300 border-blue-800/60',
+    purple: 'bg-brand-50 text-brand-400 border-brand-300/60',
     outline: 'bg-transparent text-navy-700 border-navy-300',
   };
 

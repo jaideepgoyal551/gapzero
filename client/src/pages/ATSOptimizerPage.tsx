@@ -21,7 +21,7 @@ import {
 
 export const ATSOptimizerPage: React.FC = () => {
   const { profile } = useAuth();
-  const [targetTitle, setTargetTitle] = useState(profile?.target_role || 'Full-Stack Software Engineer');
+  const [targetTitle, setTargetTitle] = useState(profile?.target_role || '');
   const [jobDescription, setJobDescription] = useState('');
   const [customResumeText, setCustomResumeText] = useState('');
   const [loading, setLoading] = useState(false);

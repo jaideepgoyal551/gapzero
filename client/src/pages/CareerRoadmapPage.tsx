@@ -135,20 +135,20 @@ export const CareerRoadmapPage: React.FC = () => {
           <div>
             <span className="text-xs font-semibold text-navy-500 uppercase tracking-wider">Overall Milestone Progress</span>
             <div className="text-2xl font-bold text-navy-900 mt-0.5">
-              {roadmap?.progress_percentage || 0}% Completed
+              {roadmap ? `${roadmap.progress_percentage}% Completed` : 'No roadmap yet'}
             </div>
             <span className="text-xs text-navy-500">
-              {completedCount} of {totalCount} total objectives achieved
+              {roadmap ? `${completedCount} of ${totalCount} total objectives achieved` : 'Generate a roadmap to track your progress'}
             </span>
           </div>
 
           <div className="flex items-center gap-2">
             <span className="text-xs text-navy-600 font-medium">Weekly Capacity:</span>
-            <Badge variant="purple">{profile?.weekly_learning_hours || 10} hrs / week</Badge>
+            <Badge variant="purple">{profile?.weekly_learning_hours ? `${profile.weekly_learning_hours} hrs / week` : 'Weekly capacity not set'}</Badge>
           </div>
         </div>
 
-        <ProgressBar value={roadmap?.progress_percentage || 0} size="md" color="brand" />
+        {roadmap && <ProgressBar value={roadmap.progress_percentage} size="md" color="brand" />}
       </Card>
 
       {/* Phase Navigation Tabs */}

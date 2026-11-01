@@ -32,10 +32,13 @@ export const LoginPage: React.FC = () => {
   };
 
   const handleDemo = async () => {
+    setError(null);
     setLoading(true);
     try {
       await loginDemo();
       navigate('/dashboard');
+    } catch (err: any) {
+      setError(err.message || 'Could not open the demo profile.');
     } finally {
       setLoading(false);
     }
@@ -45,11 +48,11 @@ export const LoginPage: React.FC = () => {
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link to="/" className="inline-flex items-center gap-2 group mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-violet-600 flex items-center justify-center text-white shadow-sm">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-orange-500 flex items-center justify-center text-white shadow-sm">
             <Sparkles className="w-5 h-5" />
           </div>
           <span className="text-2xl font-black text-navy-950 tracking-tight">
-            Gap<span className="text-brand-600">Zero</span>
+          Gap<span className="text-orange-400">Zero</span>
           </span>
         </Link>
         <h2 className="text-2xl font-bold text-navy-900 tracking-tight">
@@ -78,6 +81,7 @@ export const LoginPage: React.FC = () => {
                 <Mail className="w-4 h-4 text-navy-400 absolute left-3 top-3" />
                 <input
                   type="email"
+                  autoComplete="email"
                   value={email}
                   onChange={e => setEmail(e.target.value)}
                   placeholder="you@example.com"
@@ -88,18 +92,16 @@ export const LoginPage: React.FC = () => {
             </div>
 
             <div>
-              <div className="flex items-center justify-between mb-1">
+              <div className="mb-1">
                 <label className="block text-xs font-semibold text-navy-700">
                   Password
                 </label>
-                <a href="#reset" onClick={(e) => { e.preventDefault(); alert('Password reset link sent to registered email.'); }} className="text-xs text-brand-600 hover:text-brand-700 font-medium">
-                  Forgot password?
-                </a>
               </div>
               <div className="relative">
                 <Lock className="w-4 h-4 text-navy-400 absolute left-3 top-3" />
                 <input
                   type="password"
+                  autoComplete="current-password"
                   value={password}
                   onChange={e => setPassword(e.target.value)}
                   placeholder="••••••••"

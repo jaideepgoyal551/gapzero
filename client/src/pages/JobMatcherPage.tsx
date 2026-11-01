@@ -20,8 +20,8 @@ import {
 
 export const JobMatcherPage: React.FC = () => {
   const { profile } = useAuth();
-  const [jobTitle, setJobTitle] = useState(profile?.target_role || 'Full-Stack Software Engineer');
-  const [companyName, setCompanyName] = useState('Stripe');
+  const [jobTitle, setJobTitle] = useState(profile?.target_role || '');
+  const [companyName, setCompanyName] = useState('');
   const [jobDescription, setJobDescription] = useState('');
   const [loading, setLoading] = useState(false);
   const [currentMatch, setCurrentMatch] = useState<JobMatchResult | null>(null);

@@ -15,9 +15,10 @@ export const Button: React.FC<ButtonProps> = ({
   icon,
   className = '',
   disabled,
+  type = 'button',
   ...props
 }) => {
-  const baseStyles = 'inline-flex items-center justify-center font-medium transition-all duration-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-60 disabled:cursor-not-allowed select-none';
+  const baseStyles = 'inline-flex items-center justify-center font-semibold transition-all duration-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-offset-0 disabled:opacity-60 disabled:cursor-not-allowed select-none active:scale-[0.99]';
 
   const sizeStyles = {
     sm: 'text-xs px-3 py-1.5 gap-1.5',
@@ -26,10 +27,10 @@ export const Button: React.FC<ButtonProps> = ({
   };
 
   const variantStyles = {
-    primary: 'bg-brand-600 hover:bg-brand-700 text-white shadow-sm hover:shadow focus:ring-brand-500 border border-transparent',
-    secondary: 'bg-navy-100 hover:bg-navy-200 text-navy-800 focus:ring-navy-400 border border-transparent',
-    outline: 'border border-navy-300 hover:border-navy-400 bg-white hover:bg-navy-50 text-navy-700 focus:ring-brand-500',
-    ghost: 'text-navy-600 hover:bg-navy-100 hover:text-navy-900 border border-transparent',
+    primary: 'bg-growth-600 hover:bg-growth-500 text-white shadow-sm hover:shadow-lg hover:-translate-y-0.5 focus:ring-growth-400 border border-white/10',
+    secondary: 'bg-navy-100 hover:bg-navy-200 text-navy-800 focus:ring-accent-amber border border-white/5',
+    outline: 'border border-navy-300 hover:border-accent-amber/60 bg-white/5 hover:bg-white/10 text-navy-700 focus:ring-accent-amber',
+    ghost: 'text-navy-600 hover:bg-white/5 hover:text-navy-900 border border-transparent',
     danger: 'bg-accent-rose hover:bg-rose-700 text-white focus:ring-rose-500 border border-transparent',
   };
 
@@ -37,6 +38,7 @@ export const Button: React.FC<ButtonProps> = ({
     <button
       className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
       disabled={disabled || loading}
+      type={type}
       {...props}
     >
       {loading ? (

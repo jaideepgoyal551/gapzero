@@ -22,15 +22,15 @@ export const SettingsPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [fullName, setFullName] = useState(profile?.full_name || '');
-  const [educationLevel, setEducationLevel] = useState<EducationLevel>(profile?.education_level || "Bachelor's Degree");
+  const [educationLevel, setEducationLevel] = useState<EducationLevel | ''>(profile?.education_level || '');
   const [currentRole, setCurrentRole] = useState(profile?.current_role || '');
-  const [yearsOfExperience, setYearsOfExperience] = useState(profile?.years_of_experience || 0);
+  const [yearsOfExperience, setYearsOfExperience] = useState(profile?.years_of_experience ?? 0);
 
   const [targetRole, setTargetRole] = useState(profile?.target_role || '');
   const [targetCompaniesInput, setTargetCompaniesInput] = useState((profile?.target_companies || []).join(', '));
-  const [preferredCountry, setPreferredCountry] = useState(profile?.preferred_country || 'United States');
-  const [preferredWorkArrangement, setPreferredWorkArrangement] = useState<WorkArrangement>(profile?.preferred_work_arrangement || 'Remote');
-  const [weeklyHours, setWeeklyHours] = useState(profile?.weekly_learning_hours || 10);
+  const [preferredCountry, setPreferredCountry] = useState(profile?.preferred_country || '');
+  const [preferredWorkArrangement, setPreferredWorkArrangement] = useState<WorkArrangement>(profile?.preferred_work_arrangement || 'Any');
+  const [weeklyHours, setWeeklyHours] = useState(profile?.weekly_learning_hours ?? 0);
   const [careerGoals, setCareerGoals] = useState(profile?.career_goals || '');
   const [githubUrl, setGithubUrl] = useState(profile?.github_url || '');
   const [linkedinUrl, setLinkedinUrl] = useState(profile?.linkedin_url || '');
@@ -51,7 +51,7 @@ export const SettingsPage: React.FC = () => {
 
       await updateProfile({
         full_name: fullName,
-        education_level: educationLevel,
+        education_level: educationLevel || undefined,
         current_role: currentRole,
         years_of_experience: Number(yearsOfExperience),
         target_role: targetRole,
@@ -143,9 +143,10 @@ export const SettingsPage: React.FC = () => {
               <label className="block text-xs font-semibold text-navy-700 mb-1">Education Level</label>
               <select
                 value={educationLevel}
-                onChange={e => setEducationLevel(e.target.value as EducationLevel)}
+                onChange={e => setEducationLevel(e.target.value as EducationLevel | '')}
                 className="w-full px-3 py-2 text-xs border border-navy-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
               >
+                <option value="">Select education level</option>
                 <option value="Bachelor's Degree">Bachelor's Degree</option>
                 <option value="Master's Degree">Master's Degree</option>
                 <option value="Associate Degree">Associate Degree</option>
@@ -225,7 +226,7 @@ export const SettingsPage: React.FC = () => {
             <label className="block text-xs font-semibold text-navy-700 mb-1">Weekly Learning Capacity ({weeklyHours} hrs / week)</label>
             <input
               type="range"
-              min="2"
+              min="0"
               max="40"
               step="2"
               value={weeklyHours}
