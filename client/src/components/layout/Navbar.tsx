@@ -35,14 +35,14 @@ export const Navbar: React.FC = () => {
 
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-8">
-            <a href="#features" className="text-sm font-medium text-navy-500 hover:text-growth-400 transition-colors">
-              Features
+            <a href="#career-resources" className="text-sm font-medium text-navy-500 hover:text-growth-400 transition-colors">
+              Career resources
             </a>
-            <a href="#how-it-works" className="text-sm font-medium text-navy-500 hover:text-growth-400 transition-colors">
-              How It Works
+            <a href="#resume-help" className="text-sm font-medium text-navy-500 hover:text-growth-400 transition-colors">
+              Resume help
             </a>
-            <a href="#trust-privacy" className="text-sm font-medium text-navy-500 hover:text-growth-400 transition-colors">
-              Trust & Privacy
+            <a href="#job-search" className="text-sm font-medium text-navy-500 hover:text-growth-400 transition-colors">
+              Job search
             </a>
           </nav>
 
@@ -90,25 +90,25 @@ export const Navbar: React.FC = () => {
       {mobileMenuOpen && (
         <div id="public-mobile-menu" className="md:hidden border-b border-navy-200/70 bg-[#111713] px-4 pt-3 pb-6 space-y-2">
           <a
-            href="#features"
+            href="#career-resources"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-navy-700 hover:bg-navy-100 rounded-lg"
           >
-            Features
+            Career resources
           </a>
           <a
-            href="#how-it-works"
+            href="#resume-help"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-navy-700 hover:bg-navy-100 rounded-lg"
           >
-            How It Works
+            Resume help
           </a>
           <a
-            href="#trust-privacy"
+            href="#job-search"
             onClick={() => setMobileMenuOpen(false)}
             className="block px-3 py-2 text-base font-medium text-navy-700 hover:bg-navy-100 rounded-lg"
           >
-            Trust & Privacy
+            Job search
           </a>
           <div className="pt-4 border-t border-navy-100 flex flex-col gap-2.5">
             {user ? (
