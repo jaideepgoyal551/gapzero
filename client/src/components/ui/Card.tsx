@@ -12,7 +12,7 @@ export const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`glass-panel rounded-2xl border border-white/10 shadow-subtle ${
+      className={`glass-panel rounded-xl border border-navy-200/70 shadow-subtle ${
         hoverEffect ? 'hover:shadow-card-hover transition-all duration-300 hover:-translate-y-1' : ''
       } ${className}`}
       {...props}
@@ -27,7 +27,7 @@ export const CardHeader: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className = '',
   ...props
 }) => (
-  <div className={`p-5 sm:p-6 border-b border-white/10 ${className}`} {...props}>
+  <div className={`p-5 sm:p-6 border-b border-navy-200/70 ${className}`} {...props}>
     {children}
   </div>
 );
@@ -67,7 +67,7 @@ export const CardFooter: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({
   className = '',
   ...props
 }) => (
-  <div className={`p-4 sm:px-6 bg-navy-50/50 border-t border-white/10 rounded-b-xl ${className}`} {...props}>
+  <div className={`p-4 sm:px-6 bg-navy-50/50 border-t border-navy-200/70 rounded-b-xl ${className}`} {...props}>
     {children}
   </div>
 );

@@ -20,16 +20,16 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({
   const clampedScore = Math.min(100, Math.max(0, score));
   const offset = circumference - (clampedScore / 100) * circumference;
 
-  let color = '#cf6b78';
+  let color = '#9da99f';
   let tier = 'Needs Work';
   if (clampedScore >= 85) {
-    color = '#d58a57';
+    color = '#74e6a1';
     tier = 'Exceptional';
   } else if (clampedScore >= 70) {
-    color = '#bd6572';
+    color = '#56ca81';
     tier = 'Strong Match';
   } else if (clampedScore >= 50) {
-    color = '#f09a52';
+    color = '#bac5bd';
     tier = 'Moderate Fit';
   }
 
@@ -41,7 +41,7 @@ export const ScoreGauge: React.FC<ScoreGaugeProps> = ({
             cx={size / 2}
             cy={size / 2}
             r={radius}
-            stroke="#414148"
+            stroke="#344239"
             strokeWidth={strokeWidth}
             fill="transparent"
           />

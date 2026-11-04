@@ -5,11 +5,11 @@
 @layer base {
   :root {
     color-scheme: dark;
-    font-family: "Ubuntu Mono", "Cascadia Mono", Consolas, monospace;
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     font-synthesis: none;
     text-rendering: optimizeLegibility;
-    background: #141416;
-    color: #f1eff2;
+    background: #0c100e;
+    color: #e7ece8;
   }
 
   html {
@@ -18,19 +18,11 @@
   }
 
   body {
-    @apply min-h-screen bg-[#141416] text-navy-900 font-sans antialiased;
+    @apply min-h-screen bg-[#0c100e] text-navy-900 font-sans antialiased;
     background-image:
-      radial-gradient(ellipse at 12% 0%, rgba(119, 43, 61, 0.2), transparent 34rem),
-      radial-gradient(ellipse at 92% 18%, rgba(226, 117, 56, 0.09), transparent 30rem);
+      radial-gradient(ellipse at 10% 0%, rgba(35, 122, 72, 0.14), transparent 34rem),
+      radial-gradient(ellipse at 95% 16%, rgba(142, 161, 148, 0.06), transparent 30rem);
     background-attachment: fixed;
-  }
-
-  body,
-  button,
-  input,
-  textarea,
-  select {
-    font-family: "Ubuntu Mono", "Cascadia Mono", Consolas, monospace;
   }
 
   button,
@@ -59,19 +51,19 @@
   input:not([type="checkbox"]):not([type="radio"]),
   textarea,
   select {
-    color: #f1eff2;
-    background-color: rgba(24, 24, 27, 0.82);
-    border-color: #414148;
+    color: #e7ece8;
+    background-color: rgba(18, 24, 20, 0.92);
+    border-color: #344239;
   }
 
   input::placeholder,
   textarea::placeholder {
-    color: #92919a;
+    color: #8d9990;
   }
 
   option {
-    color: #f1eff2;
-    background: #202023;
+    color: #e7ece8;
+    background: #171c19;
   }
 
   button:active:not(:disabled) {
@@ -81,9 +73,9 @@
 
 @layer utilities {
   .glass-panel {
-    background: rgba(31, 29, 32, 0.72);
-    border: 1px solid rgba(255, 255, 255, 0.09);
-    box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    background: rgba(20, 26, 22, 0.86);
+    border: 1px solid rgba(172, 190, 178, 0.12);
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.025);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
   }
@@ -94,8 +86,8 @@
 
   .landing-grid {
     background-image:
-      linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+      linear-gradient(rgba(220, 232, 223, 0.025) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(220, 232, 223, 0.025) 1px, transparent 1px);
     background-size: 44px 44px;
     mask-image: linear-gradient(to bottom, black, transparent 90%);
   }
@@ -112,10 +104,9 @@
   }
 }
 
-/* Preserve the existing utility-class markup while giving every page the dark surface. */
 [class~="bg-white"],
 [class*="bg-white/"] {
-  background-color: rgba(31, 29, 32, 0.76) !important;
+  background-color: rgba(20, 26, 22, 0.9) !important;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
 }
@@ -124,10 +115,9 @@
   background-color: transparent !important;
 }
 
-/* Custom scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
@@ -135,12 +125,12 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #49464c;
+  background: #3b4840;
   border-radius: 9999px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #716b73;
+  background: #59685e;
 }
 
 @media (prefers-reduced-motion: reduce) {
