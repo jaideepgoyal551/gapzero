@@ -28,8 +28,8 @@ export const Button: React.FC<ButtonProps> = ({
 
   const variantStyles = {
     primary: 'bg-growth-600 hover:bg-growth-500 text-white shadow-sm hover:shadow-lg hover:-translate-y-0.5 focus:ring-growth-400 border border-white/10',
-    secondary: 'bg-navy-100 hover:bg-navy-200 text-navy-800 focus:ring-accent-amber border border-white/5',
-    outline: 'border border-navy-300 hover:border-accent-amber/60 bg-white/5 hover:bg-white/10 text-navy-700 focus:ring-accent-amber',
+    secondary: 'bg-navy-100 hover:bg-navy-200 text-navy-800 focus:ring-growth-400 border border-white/5',
+    outline: 'border border-navy-300 hover:border-growth-500/60 bg-white/5 hover:bg-white/10 text-navy-700 focus:ring-growth-400',
     ghost: 'text-navy-600 hover:bg-white/5 hover:text-navy-900 border border-transparent',
     danger: 'bg-accent-rose hover:bg-rose-700 text-white focus:ring-rose-500 border border-transparent',
   };

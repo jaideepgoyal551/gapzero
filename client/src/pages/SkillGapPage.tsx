@@ -87,7 +87,7 @@ export const SkillGapPage: React.FC = () => {
       </div>
 
       {error && (
-        <div role="alert" className="flex flex-col gap-3 rounded-2xl border border-rose-400/30 bg-rose-950/30 p-4 text-sm text-rose-200 sm:flex-row sm:items-center sm:justify-between">
+        <div role="alert" className="flex flex-col gap-3 rounded-2xl border border-rose-400/30 bg-rose-950/30 p-4 text-sm text-rose-900 sm:flex-row sm:items-center sm:justify-between">
           <span>{error}</span>
           <Button size="sm" variant="outline" onClick={fetchSkillGap}>Try again</Button>
         </div>

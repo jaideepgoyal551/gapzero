@@ -87,26 +87,35 @@ export const DashboardPage: React.FC = () => {
   const isNewUser = !latestAnalysis && (!profile?.current_skills || profile.current_skills.length === 0);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Welcome Banner */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-navy-100">
+      <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-5 pb-5 border-b border-navy-200/70">
         <div>
-          <h1 className="text-2xl font-bold text-navy-950 tracking-tight">
-            Welcome back{profile?.full_name ? `, ${profile.full_name.split(' ')[0]}` : ''}!
+          <div className="mb-2 flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-navy-400">
+            <span className="text-growth-400">Workspace</span>
+            <span>/</span>
+            <span>Overview</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl font-semibold text-navy-950 tracking-tight">
+            Welcome back{profile?.full_name ? `, ${profile.full_name.split(' ')[0]}` : ''}
           </h1>
-          <p className="text-xs sm:text-sm text-navy-500 mt-0.5">
-            Targeting: <span className="font-semibold text-brand-400">{profile?.target_role || 'Add a target role in your profile'}</span>
+          <p className="text-sm text-navy-500 mt-1.5">
+            Your career progress, priorities, and next steps at a glance.
+          </p>
+          <p className="text-xs text-navy-400 mt-2">
+            Target role <span className="mx-1.5 text-navy-300">·</span>
+            <span className="font-medium text-navy-700">{profile?.target_role || 'Add a target role in your profile'}</span>
           </p>
         </div>
 
         {error && (
-          <div role="alert" className="flex flex-col gap-3 rounded-2xl border border-rose-400/30 bg-rose-950/30 p-4 text-sm text-rose-200 sm:flex-row sm:items-center sm:justify-between">
+          <div role="alert" className="flex flex-col gap-3 rounded-xl border border-rose-400/30 bg-rose-950/30 p-4 text-sm text-rose-900 sm:flex-row sm:items-center sm:justify-between">
             <span>{error}</span>
             <Button size="sm" variant="outline" onClick={fetchDashboard}>Try again</Button>
           </div>
         )}
 
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2.5">
           <Link to="/resume-analyzer">
             <Button size="sm" icon={<UploadCloud className="w-4 h-4" />}>
               Upload New Resume
@@ -122,15 +131,15 @@ export const DashboardPage: React.FC = () => {
 
       {/* New User Welcome Callout (If no resume yet) */}
       {isNewUser && (
-        <div className="p-6 rounded-2xl bg-gradient-to-r from-brand-800 to-orange-700 text-white shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="p-5 sm:p-6 rounded-xl bg-gradient-to-r from-brand-800 to-growth-800 text-white shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="max-w-xl">
             <h3 className="text-lg font-bold">Start by analyzing your resume</h3>
-            <p className="text-xs text-brand-100 mt-1">
+            <p className="text-xs text-emerald-900 mt-1">
               Upload a PDF or DOCX resume to review your experience, identify relevant skills, and get suggestions for your next steps.
             </p>
           </div>
           <Link to="/resume-analyzer">
-            <Button size="sm" className="bg-white text-brand-700 hover:bg-brand-50 whitespace-nowrap font-semibold">
+            <Button size="sm" className="whitespace-nowrap font-semibold">
               Analyze Resume Now
             </Button>
           </Link>
@@ -138,12 +147,12 @@ export const DashboardPage: React.FC = () => {
       )}
 
       {/* Top 4 Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <section aria-label="Career summary" className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3.5">
         {/* Card 1: Fit Score */}
         <Card className="p-5 flex items-center justify-between">
           <div>
             <span className="text-xs font-semibold text-navy-500 uppercase tracking-wider">Career Fit Score</span>
-            <div className="text-3xl font-bold text-navy-900 mt-1">
+            <div className="text-3xl font-semibold text-navy-900 mt-1">
               {summary?.latest_resume_analysis ? `${summary.career_fit_score}%` : '—'}
             </div>
             <span className="text-[11px] text-brand-700 font-medium">
@@ -161,7 +170,7 @@ export const DashboardPage: React.FC = () => {
         <Card className="p-5 flex items-center justify-between">
           <div>
             <span className="text-xs font-semibold text-navy-500 uppercase tracking-wider">Skills Identified</span>
-            <div className="text-3xl font-bold text-navy-900 mt-1">
+            <div className="text-3xl font-semibold text-navy-900 mt-1">
               {summary?.identified_skills_count ?? profile?.current_skills?.length ?? '—'}
             </div>
             <span className="text-[11px] text-emerald-300 font-medium">Skills in your profile</span>
@@ -175,12 +184,12 @@ export const DashboardPage: React.FC = () => {
         <Card className="p-5 flex items-center justify-between">
           <div>
             <span className="text-xs font-semibold text-navy-500 uppercase tracking-wider">Critical Gaps</span>
-            <div className="text-3xl font-bold text-rose-600 mt-1">
+            <div className="text-3xl font-semibold text-navy-800 mt-1">
               {summary?.latest_resume_analysis ? summary.critical_gaps_count : '—'}
             </div>
             <span className="text-[11px] text-rose-700 font-medium">Priority items to bridge</span>
           </div>
-          <div className="w-12 h-12 rounded-xl bg-rose-50 text-rose-700 flex items-center justify-center">
+          <div className="w-12 h-12 rounded-xl bg-navy-100 text-navy-600 flex items-center justify-center">
             <AlertTriangle className="w-6 h-6" />
           </div>
         </Card>
@@ -189,7 +198,7 @@ export const DashboardPage: React.FC = () => {
         <Card className="p-5 flex items-center justify-between">
           <div>
             <span className="text-xs font-semibold text-navy-500 uppercase tracking-wider">Roadmap Progress</span>
-            <div className="text-3xl font-bold text-navy-900 mt-1">
+            <div className="text-3xl font-semibold text-navy-900 mt-1">
               {summary ? `${summary.roadmap_progress_percentage}%` : '—'}
             </div>
             <span className="text-[11px] text-navy-500 font-medium">
@@ -200,10 +209,10 @@ export const DashboardPage: React.FC = () => {
             <Map className="w-6 h-6" />
           </div>
         </Card>
-      </div>
+      </section>
 
       {/* Main Grid: Profile insights + upcoming tasks */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <section aria-label="Career insights and roadmap" className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <Card className="p-6">
           {summary?.latest_resume_analysis ? (
             <>
@@ -230,7 +239,7 @@ export const DashboardPage: React.FC = () => {
             </>
           ) : (
             <div className="flex h-full min-h-64 flex-col items-center justify-center text-center">
-              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-50 text-orange-300">
+              <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-brand-50 text-growth-400">
                 <Target className="h-6 w-6" />
               </div>
               <h3 className="font-bold text-navy-900">Your career insights will appear here</h3>
@@ -306,10 +315,10 @@ export const DashboardPage: React.FC = () => {
             ) : <span className="text-xs text-navy-500">Not available yet</span>}
           </div>
         </Card>
-      </div>
+      </section>
 
       {/* Bottom Section: Quick Links & Tools */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <section aria-label="Career tools" className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Module 1: ATS Resume Optimizer */}
         <Card className="p-5 hover:shadow-card-hover transition-all flex flex-col justify-between">
           <div>
@@ -363,7 +372,7 @@ export const DashboardPage: React.FC = () => {
             </Button>
           </Link>
         </Card>
-      </div>
+      </section>
     </div>
   );
 };
