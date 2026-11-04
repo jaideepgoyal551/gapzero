@@ -131,10 +131,10 @@ export const DashboardPage: React.FC = () => {
 
       {/* New User Welcome Callout (If no resume yet) */}
       {isNewUser && (
-        <div className="p-5 sm:p-6 rounded-xl bg-gradient-to-r from-brand-800 to-growth-800 text-white shadow-card flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <div className="flex flex-col items-start justify-between gap-4 rounded-lg border border-growth-500/20 border-l-2 border-l-growth-500 bg-[#121a15] p-5 text-white sm:flex-row sm:items-center sm:p-6">
           <div className="max-w-xl">
             <h3 className="text-lg font-bold">Start by analyzing your resume</h3>
-            <p className="text-xs text-emerald-900 mt-1">
+            <p className="text-xs text-navy-500 mt-1">
               Upload a PDF or DOCX resume to review your experience, identify relevant skills, and get suggestions for your next steps.
             </p>
           </div>

@@ -19,9 +19,6 @@
 
   body {
     @apply min-h-screen bg-[#0c100e] text-navy-900 font-sans antialiased;
-    background-image:
-      radial-gradient(ellipse at 10% 0%, rgba(35, 122, 72, 0.14), transparent 34rem),
-      radial-gradient(ellipse at 95% 16%, rgba(142, 161, 148, 0.06), transparent 30rem);
     background-attachment: fixed;
   }
 
@@ -73,11 +70,9 @@
 
 @layer utilities {
   .glass-panel {
-    background: rgba(20, 26, 22, 0.86);
-    border: 1px solid rgba(172, 190, 178, 0.12);
-    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.025);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
+    background: #121814;
+    border: 1px solid rgba(172, 190, 178, 0.14);
+    box-shadow: none;
   }
 
   .animate-fade-up {
@@ -102,17 +97,6 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-[class~="bg-white"],
-[class*="bg-white/"] {
-  background-color: rgba(20, 26, 22, 0.9) !important;
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-}
-
-[class~="bg-[#F8FAFC]"] {
-  background-color: transparent !important;
 }
 
 ::-webkit-scrollbar {

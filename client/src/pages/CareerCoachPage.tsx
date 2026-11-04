@@ -152,7 +152,7 @@ export const CareerCoachPage: React.FC = () => {
         </Card>
 
         {/* Conversation List */}
-        <div className="flex-1 overflow-y-auto space-y-1 bg-white p-2 rounded-xl border border-navy-200">
+        <div className="flex-1 overflow-y-auto space-y-1 bg-[#121814] p-2 rounded-lg border border-navy-200">
           <span className="text-[10px] font-bold text-navy-400 uppercase tracking-wider px-2 py-1 block">
             Previous Sessions
           </span>
@@ -179,7 +179,7 @@ export const CareerCoachPage: React.FC = () => {
       </div>
 
       {/* Main Chat Conversation Window */}
-      <Card className="flex-1 flex flex-col overflow-hidden bg-white">
+      <Card className="flex-1 flex flex-col overflow-hidden bg-[#121814]">
         {/* Chat Header */}
         <div className="p-4 border-b border-navy-100 flex items-center justify-between bg-navy-50/30">
           <div className="flex items-center gap-3">
@@ -210,7 +210,7 @@ export const CareerCoachPage: React.FC = () => {
                   <button
                     key={i}
                     onClick={() => handleSendMessage(qp)}
-                    className="p-2.5 rounded-lg border border-navy-200 bg-white hover:border-brand-300 hover:bg-brand-50/50 text-[11px] text-navy-700 font-medium transition-all"
+                    className="p-2.5 rounded-md border border-navy-200 bg-[#121814] hover:border-brand-300 hover:bg-brand-50/50 text-[11px] text-navy-700 font-medium transition-all"
                   >
                     "{qp}"
                   </button>
@@ -264,7 +264,7 @@ export const CareerCoachPage: React.FC = () => {
         </div>
 
         {/* Input Bar */}
-        <div className="p-4 border-t border-navy-100 bg-white">
+        <div className="p-4 border-t border-navy-100 bg-[#121814]">
           <form
             onSubmit={e => {
               e.preventDefault();

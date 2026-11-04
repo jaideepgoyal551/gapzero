@@ -1,222 +1,282 @@
-import React, { useState } from 'react';
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import React, { useMemo, useState } from 'react';
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import {
-  LayoutDashboard,
-  FileText,
-  Target,
-  Sparkles,
-  Map,
-  MessageSquare,
+  Activity,
   Briefcase,
-  Github,
-  Linkedin,
   DollarSign,
-  Settings,
+  FileText,
+  Github,
+  LayoutDashboard,
+  Linkedin,
   LogOut,
+  Map,
   Menu,
-  X,
+  MessageSquare,
+  Plus,
+  Search,
+  Settings,
   ShieldCheck,
+  Sparkles,
+  Target,
+  X,
 } from 'lucide-react';
-import { Button } from '@/components/ui/Button';
+
+type NavigationItem = {
+  name: string;
+  path: string;
+  icon: React.ComponentType<{ className?: string }>;
+  group: string;
+  badge?: string;
+};
+
+const navigationItems: NavigationItem[] = [
+  { name: 'Overview', path: '/dashboard', icon: LayoutDashboard, group: 'Workspace' },
+  { name: 'Resume', path: '/resume-analyzer', icon: FileText, group: 'Profile' },
+  { name: 'LinkedIn profile', path: '/linkedin-optimizer', icon: Linkedin, group: 'Profile' },
+  { name: 'Skill gaps', path: '/skill-gap', icon: Target, group: 'Planning' },
+  { name: 'Career roadmap', path: '/career-roadmap', icon: Map, group: 'Planning' },
+  { name: 'Job matcher', path: '/job-matcher', icon: Briefcase, group: 'Explore' },
+  { name: 'GitHub portfolio', path: '/github-analyzer', icon: Github, group: 'Explore' },
+  { name: 'Salary insights', path: '/salary-insights', icon: DollarSign, group: 'Explore' },
+  { name: 'ATS optimizer', path: '/ats-optimizer', icon: Activity, group: 'Tools' },
+  { name: 'AI career coach', path: '/career-coach', icon: MessageSquare, group: 'Tools', badge: 'AI' },
+  { name: 'Settings & privacy', path: '/settings', icon: Settings, group: 'Account' },
+];
+
+const primaryTabs = [
+  { name: 'Overview', path: '/dashboard' },
+  { name: 'Resume', path: '/resume-analyzer' },
+  { name: 'Skills', path: '/skill-gap' },
+  { name: 'Roadmap', path: '/career-roadmap' },
+  { name: 'Jobs', path: '/job-matcher' },
+];
 
 export const AppLayout: React.FC = () => {
   const { user, profile, logout } = useAuth();
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [query, setQuery] = useState('');
+
+  const filteredItems = useMemo(
+    () => navigationItems.filter(item => item.name.toLowerCase().includes(query.trim().toLowerCase())),
+    [query],
+  );
+  const activePage = navigationItems.find(item => item.path === pathname)?.name ?? 'Workspace';
+
+  const goToFirstMatch = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter' && query.trim() && filteredItems[0]) {
+      navigate(filteredItems[0].path);
+      setQuery('');
+      setSidebarOpen(false);
+    }
+  };
 
   const handleLogout = () => {
     logout();
     navigate('/');
   };
 
-  const navItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
-    { name: 'Resume Analyzer', path: '/resume-analyzer', icon: FileText },
-    { name: 'Skill Gap Detection', path: '/skill-gap', icon: Target },
-    { name: 'ATS Optimizer', path: '/ats-optimizer', icon: Sparkles },
-    { name: 'Career Roadmap', path: '/career-roadmap', icon: Map },
-    { name: 'AI Career Coach', path: '/career-coach', icon: MessageSquare, badge: 'AI' },
-    { name: 'Job Matcher', path: '/job-matcher', icon: Briefcase },
-    { name: 'GitHub Portfolio', path: '/github-analyzer', icon: Github },
-    { name: 'LinkedIn Optimizer', path: '/linkedin-optimizer', icon: Linkedin },
-    { name: 'Salary Insights', path: '/salary-insights', icon: DollarSign },
-    { name: 'Settings & Privacy', path: '/settings', icon: Settings },
-  ];
-  const activePage = navItems.find(item => item.path === pathname)?.name ?? 'Workspace';
+  const closeNavigation = () => {
+    setSidebarOpen(false);
+    setQuery('');
+  };
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row bg-[#0c100e]">
-      {/* Mobile Header */}
-      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[#111713] border-b border-navy-200/70">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-brand-600 flex items-center justify-center text-white">
-            <Sparkles className="w-4 h-4" />
-          </div>
-          <span className="font-semibold tracking-tight text-navy-900 text-lg">GapZero</span>
-        </div>
-        <button
-          onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="p-1.5 rounded-lg text-navy-600 hover:bg-navy-100"
-          aria-label={sidebarOpen ? 'Close navigation menu' : 'Open navigation menu'}
-          aria-expanded={sidebarOpen}
-          aria-controls="app-navigation"
-        >
-          {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-      </div>
+    <div className="min-h-screen bg-[#0c100e] text-navy-900">
+      <header className="sticky top-0 z-30 border-b border-navy-200/80 bg-[#111713]">
+        <div className="flex h-14 items-center gap-3 px-4 sm:px-6">
+          <button
+            type="button"
+            onClick={() => setSidebarOpen(!sidebarOpen)}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-md text-navy-500 hover:bg-navy-100 hover:text-navy-900 md:hidden"
+            aria-label={sidebarOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={sidebarOpen}
+            aria-controls="app-navigation"
+          >
+            {sidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
 
-      {/* Sidebar Overlay (Mobile) */}
-      {sidebarOpen && (
-        <button
-          type="button"
-          aria-label="Close navigation menu"
-          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm md:hidden"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-
-      {/* Sidebar Navigation */}
-      <aside
-        id="app-navigation"
-        className={`fixed inset-y-0 left-0 z-50 w-72 max-w-[85vw] bg-[#111713] border-r border-navy-200/70 flex flex-col transition-transform duration-200 ease-in-out md:translate-x-0 md:static md:w-64 md:max-w-none ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full'
-        }`}
-      >
-        {/* Brand */}
-        <NavLink to="/dashboard" className="h-16 flex items-center gap-2.5 px-5 border-b border-navy-200/70">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-growth-600 to-growth-400 flex items-center justify-center shadow-sm">
-            <Sparkles className="w-4 h-4 text-white" />
-          </div>
-          <div className="flex flex-col">
-            <span className="font-extrabold text-navy-950 text-lg leading-none">
+          <Link to="/dashboard" className="flex shrink-0 items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-growth-600 text-white">
+              <Sparkles className="h-4 w-4" />
+            </span>
+            <span className="hidden text-sm font-semibold tracking-tight text-navy-900 sm:inline">
               Gap<span className="text-growth-400">Zero</span>
             </span>
-            <span className="text-[9px] font-medium text-navy-400 uppercase tracking-[0.16em] mt-1">
-              Career workspace
-            </span>
-          </div>
-        </NavLink>
+          </Link>
 
-        {/* User Snapshot Card */}
-        <div className="p-3.5 mx-3 my-4 bg-navy-50/70 border border-navy-200/70 rounded-xl">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-brand-100 text-growth-400 flex items-center justify-center font-semibold text-sm ring-1 ring-growth-500/20">
-              {profile?.full_name ? profile.full_name[0].toUpperCase() : 'U'}
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-xs font-semibold text-navy-900 truncate">
-                {profile?.full_name || user?.email?.split('@')[0] || 'Candidate'}
-              </p>
-              <p className="text-[11px] text-navy-500 font-medium truncate">
-                {profile?.target_role || 'Add your target role'}
-              </p>
-            </div>
-          </div>
-        </div>
+          <div className="mx-1 hidden h-6 w-px bg-navy-200 sm:block" />
 
-        {/* Navigation Links */}
-        <nav className="flex-1 px-3 py-2 overflow-y-auto" aria-label="Main navigation">
-          {navItems.map((item, index) => {
-            const Icon = item.icon;
-            return (
-              <React.Fragment key={item.path}>
-                {(index === 0 || index === 1 || index === navItems.length - 1) && (
-                  <p className={`px-3 ${index === 0 ? 'pt-1' : 'pt-6'} pb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-navy-400`}>
-                    {index === 0 ? 'Workspace' : index === 1 ? 'Career tools' : 'Account'}
-                  </p>
-                )}
-                <NavLink
-                  to={item.path}
-                  onClick={() => setSidebarOpen(false)}
-                  className={({ isActive }) =>
-                    `group flex items-center justify-between px-3 py-2.5 mb-0.5 rounded-lg text-[13px] font-medium transition-colors ${
-                      isActive
-                        ? 'bg-growth-500/10 text-growth-400 ring-1 ring-inset ring-growth-500/20'
-                        : 'text-navy-500 hover:bg-navy-100 hover:text-navy-900'
-                    }`
-                  }
-                >
-                  <div className="flex items-center gap-3">
-                    <Icon className="w-4 h-4 flex-shrink-0" />
-                    <span>{item.name}</span>
-                  </div>
-                  {item.badge && (
-                    <span className="text-[9px] uppercase font-bold tracking-wider px-1.5 py-0.5 rounded bg-growth-500/10 text-growth-400 ring-1 ring-inset ring-growth-500/20">
-                      {item.badge}
-                    </span>
-                  )}
-                </NavLink>
-              </React.Fragment>
-            );
-          })}
-        </nav>
+          <label className="relative ml-auto w-full max-w-[420px]">
+            <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-navy-400" />
+            <input
+              type="search"
+              value={query}
+              onChange={event => setQuery(event.target.value)}
+              onKeyDown={goToFirstMatch}
+              placeholder="Search career tools..."
+              aria-label="Search career tools"
+              className="h-9 w-full rounded-md border border-navy-200 bg-[#0c100e] pl-9 pr-14 text-sm text-navy-800 placeholder:text-navy-400 focus:border-growth-500 focus:ring-2 focus:ring-growth-500/20"
+            />
+            <kbd className="pointer-events-none absolute right-2.5 top-1/2 hidden -translate-y-1/2 rounded border border-navy-200 px-1.5 py-0.5 text-[10px] text-navy-400 sm:inline">
+              Enter
+            </kbd>
+          </label>
 
-        {/* AI Privacy & Quick Session */}
-        <div className="p-4 border-t border-navy-200/70 bg-[#111713]">
           <button
-            onClick={() => {
-              navigate('/career-coach');
-              setSidebarOpen(false);
-            }}
-            className="w-full mb-3 flex items-center justify-center gap-2 px-3 py-2.5 bg-growth-600 hover:bg-growth-500 text-white rounded-lg text-xs font-semibold transition-colors"
+            type="button"
+            onClick={() => navigate('/resume-analyzer')}
+            className="hidden h-9 shrink-0 items-center gap-1.5 rounded-md border border-growth-500/40 bg-growth-600 px-3 text-xs font-semibold text-white hover:bg-growth-500 sm:inline-flex"
           >
-            <MessageSquare className="w-3.5 h-3.5" />
-            <span>Chat with AI Coach</span>
+            <Plus className="h-4 w-4" />
+            <span>New analysis</span>
           </button>
 
           <button
-            onClick={handleLogout}
-            className="w-full flex items-center gap-2.5 px-3 py-2 text-xs font-medium text-navy-500 hover:text-navy-900 hover:bg-navy-100 rounded-lg transition-colors"
+            type="button"
+            onClick={() => navigate('/settings')}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-growth-500/15 text-xs font-semibold text-growth-300 ring-1 ring-growth-500/30 hover:ring-growth-400"
+            aria-label={`Open settings for ${profile?.full_name || user?.email || 'your account'}`}
+            title={profile?.full_name || user?.email || 'Account settings'}
           >
-            <LogOut className="w-4 h-4" />
-            <span>Sign Out</span>
+            {profile?.full_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
           </button>
         </div>
-      </aside>
+      </header>
 
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0 overflow-hidden">
-        {/* Top Header Bar */}
-        <header className="hidden md:flex min-h-16 bg-[#111713]/95 border-b border-navy-200/70 items-center justify-between px-5 lg:px-8 z-10">
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-navy-400">Workspace</span>
-            <span className="text-navy-300">/</span>
-            <span className="text-xs font-semibold text-navy-800">{activePage}</span>
+      <div className="relative flex min-h-[calc(100vh-3.5rem)]">
+        {sidebarOpen && (
+          <button
+            type="button"
+            aria-label="Close navigation menu"
+            className="fixed inset-0 z-20 bg-black/70 md:hidden"
+            onClick={closeNavigation}
+          />
+        )}
+
+        <aside
+          id="app-navigation"
+          className={`fixed bottom-0 left-0 top-14 z-20 flex w-64 flex-col border-r border-navy-200/80 bg-[#101512] transition-transform duration-200 md:sticky md:top-14 md:h-[calc(100vh-3.5rem)] md:translate-x-0 ${
+            sidebarOpen ? 'translate-x-0' : '-translate-x-full'
+          }`}
+        >
+          <div className="border-b border-navy-200/70 px-4 py-4">
+            <button
+              type="button"
+              onClick={() => navigate('/settings')}
+              className="flex w-full items-center gap-3 rounded-md p-2 text-left hover:bg-navy-100"
+            >
+              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-navy-200 text-sm font-semibold text-navy-800">
+                {profile?.full_name?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-xs font-semibold text-navy-800">
+                  {profile?.full_name || user?.email?.split('@')[0] || 'Your workspace'}
+                </span>
+                <span className="mt-0.5 block truncate text-[11px] text-navy-400">
+                  {profile?.target_role || 'Set your target role'}
+                </span>
+              </span>
+              <Target className="h-4 w-4 shrink-0 text-navy-400" />
+            </button>
           </div>
 
-          <div className="flex items-center gap-4">
-            <button
-              onClick={() => navigate('/settings')}
-              className="inline-flex items-center gap-2 text-xs text-navy-500 hover:text-navy-900"
-              title="Update your target role"
-            >
-              <Target className="w-3.5 h-3.5 text-growth-400" />
-              <span className="max-w-40 truncate">{profile?.target_role || 'Set target role'}</span>
-            </button>
-            <span className="h-5 w-px bg-navy-200" />
-            <button
-              onClick={() => navigate('/settings')}
-              className="text-xs text-navy-500 hover:text-growth-400 flex items-center gap-1.5 transition-colors"
-            >
-              <ShieldCheck className="w-4 h-4 text-navy-400" />
-              <span>Settings</span>
-            </button>
+          <nav className="flex-1 overflow-y-auto px-3 py-3" aria-label="Main navigation">
+            {['Workspace', 'Profile', 'Planning', 'Explore', 'Tools', 'Account'].map(group => {
+              const items = filteredItems.filter(item => item.group === group);
+              if (!items.length) return null;
+              return (
+                <div key={group} className="mb-4">
+                  <h2 className="px-2 pb-1.5 pt-2 text-[10px] font-semibold uppercase tracking-[0.12em] text-navy-400">
+                    {group}
+                  </h2>
+                  {items.map(item => {
+                    const Icon = item.icon;
+                    return (
+                      <NavLink
+                        key={item.path}
+                        to={item.path}
+                        onClick={closeNavigation}
+                        className={({ isActive }) =>
+                          `mb-0.5 flex items-center gap-2.5 rounded-md border px-2.5 py-2 text-[13px] transition-colors ${
+                            isActive
+                              ? 'border-growth-500/20 bg-growth-500/10 font-semibold text-growth-400'
+                              : 'border-transparent text-navy-500 hover:bg-navy-100 hover:text-navy-900'
+                          }`
+                        }
+                      >
+                        <Icon className="h-4 w-4 shrink-0" />
+                        <span className="min-w-0 flex-1 truncate">{item.name}</span>
+                        {item.badge && (
+                          <span className="rounded border border-growth-500/20 px-1 py-0.5 text-[9px] font-semibold uppercase text-growth-300">
+                            {item.badge}
+                          </span>
+                        )}
+                      </NavLink>
+                    );
+                  })}
+                </div>
+              );
+            })}
+            {filteredItems.length === 0 && (
+              <p className="px-2 py-4 text-xs leading-relaxed text-navy-400">
+                No tools match “{query}”. Try another search.
+              </p>
+            )}
+          </nav>
 
+          <div className="border-t border-navy-200/70 p-3">
             <button
-              onClick={() => navigate('/career-coach')}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-lg text-xs font-medium bg-growth-500/10 hover:bg-growth-500/15 text-growth-400 ring-1 ring-inset ring-growth-500/20 transition-colors"
+              type="button"
+              onClick={handleLogout}
+              className="flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-xs text-navy-400 hover:bg-navy-100 hover:text-navy-900"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>AI Coach Ready</span>
+              <LogOut className="h-4 w-4" />
+              Sign out
             </button>
+            <Link
+              to="/settings"
+              className="mt-1 flex items-center gap-2 rounded-md px-2.5 py-2 text-xs text-navy-400 hover:bg-navy-100 hover:text-navy-900"
+            >
+              <ShieldCheck className="h-4 w-4" />
+              Privacy & account
+            </Link>
           </div>
-        </header>
+        </aside>
 
-        {/* Page Content Outlet */}
-        <main className="flex-1 p-4 sm:p-6 lg:p-8 overflow-y-auto max-w-screen-2xl w-full mx-auto animate-fade-up">
-          <Outlet />
+        <main className="min-w-0 flex-1">
+          <div className="border-b border-navy-200/70 bg-[#0e130f]">
+            <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 overflow-x-auto px-4 sm:px-6 lg:px-8">
+              <nav className="flex min-w-max items-center gap-1" aria-label="Workspace sections">
+                {primaryTabs.map(tab => (
+                  <NavLink
+                    key={tab.path}
+                    to={tab.path}
+                    onClick={() => setSidebarOpen(false)}
+                    className={({ isActive }) =>
+                      `relative flex h-12 items-center px-3 text-xs font-medium transition-colors ${
+                        isActive
+                          ? 'text-navy-900 after:absolute after:inset-x-2 after:bottom-0 after:h-0.5 after:rounded-full after:bg-growth-400'
+                          : 'text-navy-400 hover:text-navy-800'
+                      }`
+                    }
+                  >
+                    {tab.name}
+                  </NavLink>
+                ))}
+              </nav>
+              <div className="hidden items-center gap-2 text-[11px] text-navy-400 lg:flex">
+                <span className="h-1.5 w-1.5 rounded-full bg-growth-400" />
+                <span>{activePage}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="mx-auto w-full max-w-[1440px] p-4 sm:p-6 lg:px-8 lg:py-7">
+            <Outlet />
+          </div>
         </main>
       </div>
     </div>

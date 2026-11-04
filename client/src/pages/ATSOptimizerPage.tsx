@@ -200,7 +200,7 @@ export const ATSOptimizerPage: React.FC = () => {
                     </div>
                   )}
 
-                  <div className="text-xs text-navy-900 bg-white p-3 rounded-lg border border-navy-200">
+                  <div className="text-xs text-navy-900 bg-[#121814] p-3 rounded-md border border-navy-200">
                     <div className="flex justify-between items-center mb-1">
                       <span className="font-bold text-emerald-700 uppercase tracking-wider text-[10px]">Recommended Rewrite:</span>
                       <button

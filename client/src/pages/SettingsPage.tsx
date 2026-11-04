@@ -144,7 +144,7 @@ export const SettingsPage: React.FC = () => {
               <select
                 value={educationLevel}
                 onChange={e => setEducationLevel(e.target.value as EducationLevel | '')}
-                className="w-full px-3 py-2 text-xs border border-navy-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+                className="w-full px-3 py-2 text-xs border border-navy-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 bg-[#121814]"
               >
                 <option value="">Select education level</option>
                 <option value="Bachelor's Degree">Bachelor's Degree</option>
@@ -212,7 +212,7 @@ export const SettingsPage: React.FC = () => {
               <select
                 value={preferredWorkArrangement}
                 onChange={e => setPreferredWorkArrangement(e.target.value as WorkArrangement)}
-                className="w-full px-3 py-2 text-xs border border-navy-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500 bg-white"
+                className="w-full px-3 py-2 text-xs border border-navy-200 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-500 bg-[#121814]"
               >
                 <option value="Remote">Remote</option>
                 <option value="Hybrid">Hybrid</option>

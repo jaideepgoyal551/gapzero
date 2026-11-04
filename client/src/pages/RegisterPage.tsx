@@ -50,14 +50,14 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-[#0c100e] flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md text-center">
         <Link to="/" className="inline-flex items-center gap-2 group mb-4">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-orange-500 flex items-center justify-center text-white shadow-sm">
+          <div className="w-10 h-10 rounded-lg bg-growth-600 flex items-center justify-center text-white">
             <Sparkles className="w-5 h-5" />
           </div>
-          <span className="text-2xl font-black text-navy-950 tracking-tight">
-            Gap<span className="text-brand-600">Zero</span>
+          <span className="text-xl font-semibold text-navy-950 tracking-tight">
+            Gap<span className="text-growth-400">Zero</span>
           </span>
         </Link>
         <h2 className="text-2xl font-bold text-navy-900 tracking-tight">
@@ -69,7 +69,7 @@ export const RegisterPage: React.FC = () => {
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4 sm:px-0">
-        <div className="bg-white py-8 px-6 sm:px-10 rounded-2xl border border-navy-200/80 shadow-subtle">
+        <div className="bg-[#121814] py-8 px-6 sm:px-10 rounded-lg border border-navy-200/80">
           {error && (
             <div className="mb-4 p-3 rounded-lg bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
               <AlertCircle className="w-4 h-4 flex-shrink-0" />
@@ -154,7 +154,7 @@ export const RegisterPage: React.FC = () => {
                 <div className="w-full border-t border-navy-200" />
               </div>
               <div className="relative flex justify-center text-xs uppercase">
-                <span className="bg-white px-2 text-navy-400 font-medium">
+                <span className="bg-[#121814] px-2 text-navy-400 font-medium">
                   Or Explore Now
                 </span>
               </div>

@@ -139,7 +139,7 @@ export const SkillGapPage: React.FC = () => {
       </div>
 
       {/* Filter Toolbar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 rounded-xl border border-navy-200/80">
+      <div className="flex flex-wrap items-center justify-between gap-4 bg-[#121814] p-4 rounded-lg border border-navy-200/80">
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-1.5 text-xs font-semibold text-navy-600">
             <Filter className="w-3.5 h-3.5" />

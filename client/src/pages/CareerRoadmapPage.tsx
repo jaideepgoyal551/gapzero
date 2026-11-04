@@ -200,7 +200,7 @@ export const CareerRoadmapPage: React.FC = () => {
             <Card
               key={task.id}
               className={`p-6 transition-all border ${
-                task.completed ? 'bg-navy-50/50 border-navy-200' : 'bg-white border-navy-200 hover:shadow-subtle'
+                task.completed ? 'bg-navy-50/50 border-navy-200' : 'bg-[#121814] border-navy-200 hover:border-growth-500/40'
               }`}
             >
               <div className="flex items-start justify-between gap-4">
